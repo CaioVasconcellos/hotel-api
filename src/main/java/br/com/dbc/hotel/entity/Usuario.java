@@ -1,11 +1,12 @@
 package br.com.dbc.hotel.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,8 +34,14 @@ public class Usuario {
     private String senha;
 
     @Column(name = "dataNascimento")
-    private LocalDateTime dataNascimento;
+    private LocalDate dataNascimento;
 
-    @ManyToMany (mappedBy = "usuarios")
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "USUARIO_CARGO",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_cargo")
+    )
     private Set<Cargo> cargos = new HashSet<>();
 }

@@ -7,7 +7,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsuarioDTO {
+public class UsuarioDTO extends UsuarioCreateDTO{
     private Integer idUsuario;
 
     private Set<String> cargos;

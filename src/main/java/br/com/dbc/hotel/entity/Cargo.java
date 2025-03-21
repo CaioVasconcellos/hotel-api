@@ -26,12 +26,7 @@ public class Cargo implements GrantedAuthority {
     private String titulo;
 
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "USUARIO_CARGO",
-            joinColumns = @JoinColumn(name = "ID_CARGO"),
-            inverseJoinColumns = @JoinColumn(name = "ID_USUARIO")
-    )
+    @ManyToMany(mappedBy = "cargos")
     private Set<Usuario> usuarios;
 
     @Override
