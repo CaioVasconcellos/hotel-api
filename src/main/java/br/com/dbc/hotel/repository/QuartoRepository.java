@@ -1,0 +1,10 @@
+package br.com.dbc.hotel.repository;
+
+import br.com.dbc.hotel.entity.Quarto;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface QuartoRepository extends JpaRepository<Quarto, Integer> {
+
+}
