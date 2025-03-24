@@ -142,4 +142,8 @@ public class UsuarioService {
         return new CustomPageDTO<>(usuarioDTOPage);
     }
 
+    public Optional<Usuario> findByLogin(String email) {
+        return usuarioRepository.findByEmail(email);
+    }
+
 }
