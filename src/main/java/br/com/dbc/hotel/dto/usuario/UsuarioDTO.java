@@ -1,4 +1,4 @@
-package br.com.dbc.hotel.dto.Usuario;
+package br.com.dbc.hotel.dto.usuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

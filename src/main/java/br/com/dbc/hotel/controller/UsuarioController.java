@@ -1,12 +1,13 @@
 package br.com.dbc.hotel.controller;
 
-import br.com.dbc.hotel.dto.Usuario.UsuarioCreateDTO;
-import br.com.dbc.hotel.dto.Usuario.UsuarioDTO;
+import br.com.dbc.hotel.dto.usuario.UsuarioCreateDTO;
+import br.com.dbc.hotel.dto.usuario.UsuarioDTO;
 import br.com.dbc.hotel.dto.custompage.CustomPageDTO;
 import br.com.dbc.hotel.entity.Usuario;
 import br.com.dbc.hotel.exceptions.NotFoundException;
 import br.com.dbc.hotel.exceptions.RegraDeNegocioException;
 import br.com.dbc.hotel.service.UsuarioService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ import static br.com.dbc.hotel.utils.CreateResponse.messageResponse;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/usuario")
-//@Tag(name = "Usuário", description = "Endpoints para gerenciamento de usuários")
+@Tag(name = "Usuário", description = "Endpoints para gerenciamento de usuários")
 public class UsuarioController {
     private final UsuarioService usuarioService;
 

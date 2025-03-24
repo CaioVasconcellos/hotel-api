@@ -2,9 +2,11 @@ package br.com.dbc.hotel.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+
 public enum StatusQuarto {
     DISPONIVEL,
     OCUPADO;
+
 
     @JsonCreator
     public static StatusQuarto fromString(String value) {

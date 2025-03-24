@@ -23,6 +23,7 @@ public class Quarto {
     @Column(name = "nome")
     private String nome;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "ala")
     private AlaHotel alaHotel;
 }

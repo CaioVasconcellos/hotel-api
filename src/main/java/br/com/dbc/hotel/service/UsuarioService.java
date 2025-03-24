@@ -1,7 +1,7 @@
 package br.com.dbc.hotel.service;
 
-import br.com.dbc.hotel.dto.Usuario.UsuarioCreateDTO;
-import br.com.dbc.hotel.dto.Usuario.UsuarioDTO;
+import br.com.dbc.hotel.dto.usuario.UsuarioCreateDTO;
+import br.com.dbc.hotel.dto.usuario.UsuarioDTO;
 import br.com.dbc.hotel.dto.custompage.CustomPageDTO;
 import br.com.dbc.hotel.entity.Cargo;
 import br.com.dbc.hotel.entity.Usuario;
@@ -70,12 +70,14 @@ public class UsuarioService {
         return usuarioDTO;
     }
 
-    public UsuarioDTO update(Integer usuarioId, UsuarioCreateDTO usuarioCreateDTO) throws RegraDeNegocioException {
-        Usuario usuario = findById(usuarioId);
+    public UsuarioDTO update(Integer id, UsuarioCreateDTO usuarioCreateDTO) throws RegraDeNegocioException {
+        Usuario usuario = findById(id);
 
         List<Usuario> todosUsuarios = usuarioRepository.findAll();
-        boolean emailExiste = todosUsuarios.stream().anyMatch(usuarios -> usuarios.getEmail().equalsIgnoreCase(usuarioCreateDTO.getEmail()));
-        if (emailExiste) {
+        boolean emailExiste = todosUsuarios.stream()
+                .anyMatch(usuarios -> !usuarios.getIdUsuario().equals(id) && usuarios.getEmail().equalsIgnoreCase(usuarioCreateDTO.getEmail()));
+
+         if (emailExiste) {
             throw new RegraDeNegocioException("Já existe um usuário com este email cadastrado.", HttpStatus.BAD_REQUEST);
         }
 
@@ -97,6 +99,7 @@ public class UsuarioService {
         }
 
         cargos.add(user);
+        usuario.setNome(usuarioCreateDTO.getNome());
 
         Usuario save = usuarioRepository.save(usuario);
         UsuarioDTO usuarioDTO = objectMapper.convertValue(save, UsuarioDTO.class);

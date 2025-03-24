@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -29,14 +30,15 @@ public class Reserva {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_quarto", referencedColumnName = "id_quarto")
-    private Quarto idQuarto;
+    private Quarto quarto;
 
     @Column(name = "dt_inicio")
-    private LocalDateTime dtInicio;
+    private LocalDate dtInicio;
 
     @Column(name = "dt_fim")
-    private LocalDateTime dtFim;
+    private LocalDate dtFim;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private StatusQuarto statusQuarto;
 }
