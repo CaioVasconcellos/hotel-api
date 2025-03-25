@@ -42,9 +42,9 @@ public class QuartoController {
         return ResponseEntity.ok(quartoDto);
     }
 
-    @GetMapping("/{idQUarto}")
-    public ResponseEntity<Map<String, Object>> retornarUsuarioPorId(@PathVariable Integer idQUarto) throws NotFoundException {
-        Quarto quarto = quartoService.findById(idQUarto);
+    @GetMapping("/{idQuarto}")
+    public ResponseEntity<Map<String, Object>> retornarUsuarioPorId(@PathVariable Integer idQuarto) throws NotFoundException {
+        Quarto quarto = quartoService.findById(idQuarto);
         return ResponseEntity.ok(createResponseMessage("Quarto encontrado com sucesso", quarto, "Quarto"));
     }
 

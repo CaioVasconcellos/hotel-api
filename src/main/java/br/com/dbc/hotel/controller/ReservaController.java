@@ -1,12 +1,9 @@
 package br.com.dbc.hotel.controller;
 
-import br.com.dbc.hotel.dto.custompage.CustomPageDTO;
 import br.com.dbc.hotel.dto.custompage.CustomPageDateDTO;
-import br.com.dbc.hotel.dto.quarto.QuartoCreateDTO;
 import br.com.dbc.hotel.dto.quarto.QuartoDTO;
 import br.com.dbc.hotel.dto.reserva.ReservaCreateDTO;
 import br.com.dbc.hotel.dto.reserva.ReservaDTO;
-import br.com.dbc.hotel.entity.Quarto;
 import br.com.dbc.hotel.entity.Reserva;
 import br.com.dbc.hotel.exceptions.NotFoundException;
 import br.com.dbc.hotel.exceptions.RegraDeNegocioException;
@@ -25,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static br.com.dbc.hotel.utils.CreateResponse.createResponseMessage;
+import static br.com.dbc.hotel.utils.CreateResponse.messageResponse;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -49,7 +47,7 @@ public class ReservaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createResponseMessage("Reserva criada com sucesso.", entity, "Reserva"));
     }
 
-    @GetMapping("/buscarPorIntervalo")
+    @GetMapping("/quartos-ocupados")
     public ResponseEntity<List<ReservaDTO>> buscarReservasPorIntervalo(
             @RequestParam("dtInicio") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dtInicio,
             @RequestParam("dtFim") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dtFim) throws RegraDeNegocioException {
@@ -74,4 +72,21 @@ public class ReservaController {
         return reservaService.buscarQuartosLivresPorAlaEData(page, size, sortField, sortDirection, ala, dtInicio, dtFim);
     }
 
+    @GetMapping("/{idReserva}")
+    public ResponseEntity<Map<String,Object>> buscarReservaPorId(@PathVariable Integer idReserva) throws NotFoundException {
+        Reserva byId = reservaService.findById(idReserva);
+        return ResponseEntity.ok(createResponseMessage("Reserva encontrada", byId, "Reserva"));
+    }
+
+    @GetMapping("/usuario/{nomeUsuario}")
+    public ResponseEntity<Map<String,Object>> buscarUsuarioPorId(@PathVariable String nomeUsuario){
+        List<ReservaDTO> reservaDTOS = reservaService.buscarReservasPorNomeUsuario(nomeUsuario);
+        return ResponseEntity.ok(createResponseMessage("Reserva encontrada", reservaDTOS, "Reservas"));
+    }
+
+    @DeleteMapping("/{idReserva}")
+    public ResponseEntity<Map<String,Object>> deletarReserva(@PathVariable Integer idReserva) throws RegraDeNegocioException {
+        reservaService.deletarReserva(idReserva);
+        return ResponseEntity.ok(messageResponse("Reserva deletada com sucesso."));
+    }
 }

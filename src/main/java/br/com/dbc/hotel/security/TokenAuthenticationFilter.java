@@ -7,7 +7,6 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -33,18 +32,14 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        if (request.getRequestURI().startsWith("/auth") || request.getRequestURI().startsWith("/usuario")) {
+        if (request.getRequestURI().startsWith("/auth")){
             filterChain.doFilter(request, response);
             return;
         }
 
-        if (request.getRequestURI().startsWith("/usuario")) {
-            if ("POST".equalsIgnoreCase(request.getMethod())) {
-                filterChain.doFilter(request, response);
-            } else {
-                response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-                response.getWriter().write("Método HTTP não permitido. Somente POST é permitido para /usuario.");
-            }
+        if (request.getRequestURI().matches("/usuario") && request.getMethod().equals("POST")) {
+            filterChain.doFilter(request, response);
+            return;
         }
 
         String tokenFromHeader = getTokenFromHeader(request);
@@ -61,6 +56,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken usuarioEntity = null;
         try {
             usuarioEntity = tokenService.isValid(tokenFromHeader);
+
+            if (usuarioEntity == null) {
+                respondUnauthorized(response, "Token inválido");
+                return;
+            }
 
             SecurityContextHolder.getContext().setAuthentication(usuarioEntity);
         } catch (ExpiredJwtException | SignatureException | MalformedJwtException e) {

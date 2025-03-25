@@ -53,7 +53,15 @@ public class ReservaService {
         excluirReservasComDataFinalAposDataAtualSemHora();
         List<Reserva> reservas = reservaRepository.findByUsuario_Nome(nomeUsuario);
         return reservas.stream()
-                .map(reserva -> objectMapper.convertValue(reserva, ReservaDTO.class))
+                .map(reserva -> {
+                    ReservaDTO reservaDTO = objectMapper.convertValue(reserva, ReservaDTO.class);
+                    try {
+                        atualizarReservaColunasExternas(reserva, reservaDTO);
+                    } catch (RegraDeNegocioException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return reservaDTO;
+                })
                 .collect(Collectors.toList());
     }
 
