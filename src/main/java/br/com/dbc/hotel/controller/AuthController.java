@@ -40,13 +40,9 @@ public class AuthController{
                             loginDTO.getSenha()
                     );
             Authentication authentication;
-            try {
+
                 authentication =
                         authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-            }
 
             Usuario usuarioValidado = (Usuario) authentication.getPrincipal();
 
